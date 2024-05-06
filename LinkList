@@ -1,0 +1,211 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef int ElemType;
+typedef struct LNode //定义单链表结点类型
+{
+    ElemType data; //每个节点存放一个数据元素
+    struct  LNode *next; //指针指向下一个结点
+}LNode,*LinkList;
+
+//初始化一个单链表（带头结点）
+bool InitList(LinkList &L)
+{
+    L=(LNode*)malloc(sizeof(LNode)); //分配一个头结点
+    if(L==NULL){//内存不足，分配失败
+        return false;
+    }
+    L->next=NULL;
+    return true;
+}
+
+//按位序插入（带头结点），i代表插入位序，e代表插入元素
+bool ListInsert(LinkList &L,int i,ElemType e)
+{
+    if(i<1){
+        return false;
+    }
+    LNode *p;//指针p指向当前扫描的结点
+    int j=0; //当前p指向的是第几个结点
+    p=L;//L指向头结点，头结点是第0个结点（不存入数据）
+    while (p!=NULL&&j<i-1)//循环找到第i-1个结点
+    {
+        p=p->next;
+        j++;
+    }
+    if(p==NULL){//i值不合法
+        return false;
+    }
+    LNode *s=(LNode*)malloc(sizeof(LNode));
+    s->data=e;
+    s->next=p->next;
+    p->next=s;//将结点s连到p之后
+    return true;
+}
+
+//指定结点的后插操作
+bool InsertNextNode(LNode *p,ElemType e)
+{
+    if(p==NULL){
+        return false;
+    }
+    LNode *s=(LNode*)malloc(sizeof(LNode));
+    if(s==NULL){
+        return false;
+    }
+    s->data=e;//用结点s保存数据元素e
+    s->next=p->next;
+    p->next=s;//将结点s连到p之后
+    return true;
+}
+
+//指定结点的前插操作
+bool InserPriorNode(LNode *p,ElemType e)
+{
+    if(p==NULL){
+        return false;
+    }
+    LNode *s=(LNode*)malloc(sizeof(LNode));
+    if(s==NULL){
+        return false;
+    }
+    s->next=p->next;
+    p->next=s;//将新结点s连到p之后
+    s->data=p->data;//将p中的元素复制到s中
+    p->data=e;//p中元素覆盖为e
+    return true;
+}
+
+//按位序删除（带头结点）
+bool ListDelete(LinkList &L,int i,ElemType &e)
+{
+    if(i<1){
+        return false;
+    }
+    LNode *p;// 指针p指向当前扫描的结点
+    int j=0;//当前p指向的是第几个结点
+    p=L;//L指向头结点，头结点是第0个结点（不存数据）
+    while (p!=NULL&&j<i-1)//循环找到第i-1个结点
+    {
+        p=p->next;
+        j++;
+    }
+    if(p==NULL){//i值不合法
+        return false;
+    }
+    if (p->next==NULL)
+    {
+        return false;
+    }
+    LNode *q=p->next;//用q指向被删除的结点
+    e=q->data;//用e返回元素的值
+    p->next=q->next;//将*q结点从链中断开
+    free(q);//释放结点的存储空间
+    return true;//删除成功
+}
+
+//指定结点的删除
+bool DeleteNode(LNode *p)
+{
+    if(p==NULL){
+        return false;
+    }
+    LNode *q=p->next;//用q指向*p的后继结点
+    p->data=p->next->data;//和后继节点交换数据域
+    p->next=q->next;//将*q结点从链中断开
+    free(q);//释放后继节点的存储空间
+    return true;
+}
+
+//按位序查找
+LNode *GetElem(LinkList L, int i)
+{
+    if(i<0){
+        return NULL;
+    }
+    LNode *p;//指针p指向当前扫描到的结点
+    int j=0;//当前p指向的是第几个结点
+    p=L;//指向头结点，头结点是第0个结点（不存入数据）
+    while (p!=NULL&&j<i)//循环找到第i个结点
+    {
+        p=p->next;
+        j++;
+    }
+    return p;
+}
+
+//按值查找
+LNode *LocateElem(LinkList L,ElemType e)
+{
+    LNode *p=L->next;//从第1个结点开始查找数据为e的结点
+    while (p!=NULL&&p->data!=e)
+    {
+        p=p->next;
+    }
+    return p;//找到后返回该结点指针，否则返回NULL
+}
+
+//求表的长度
+int Length(LinkList L)
+{
+    int len=0;//统计表长
+    LNode *p=L;
+    while (p->next!=NULL)
+    {
+        p=p->next;
+        len++;
+    }
+    return len;
+}
+
+//尾插法建立单链表
+bool LinkListTailInsert(LinkList &L)//正向建立单链表
+{
+    ElemType x;
+    L=(LinkList)malloc(sizeof(LNode));//建立头结点
+    LNode *s,*r=L;//r为表尾指针
+    scanf("%d",&x);//输入结点的值
+    while (x!=9999)
+    {
+        s=(LNode*)malloc(sizeof(LNode));
+        s->data=x;
+        r->next=s;//在r结点之后插入元素x
+        r=s;//r指向新的表尾结点，永远保持r指向最后一个结点
+        scanf("%d",&x);
+    }
+    r->next=NULL;//尾结点指针为空
+    return L;   
+}
+
+//头插法建立单链表
+bool LinkListHeadInsert(LinkList &L)
+{
+    LNode *s;
+    ElemType x;
+    L=(LinkList)malloc(sizeof(LNode));//建立头结点
+    L->next=NULL;//初始为空链表
+    scanf("%d",&x);
+    while (x!=9999)
+    {
+        s=(LNode*)malloc(sizeof(LNode));//创建新结点
+        s->data=x;
+        s->next=L->next;
+        L->next=s;//将新节点插入表中，L为头指针
+        scanf("%d",&x);
+    }
+    return L;
+}
+int main()
+{
+    int i,e;
+    LinkList L;//声明一个单链表
+    InitList(L);//初始化一个空表
+    LinkListHeadInsert(L);//头结点建立
+    LinkListTailInsert(L);//尾结点建立
+    ListInsert(L,i,e);
+    InsertNextNode(L,e);
+    InserPriorNode(L,e);
+    ListDelete(L,i,e);
+    GetElem(L, i);
+    LocateElem(L,e);
+    Length(L);
+}
