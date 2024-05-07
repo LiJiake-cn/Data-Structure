@@ -1,0 +1,53 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef int ElemType;
+typedef struct DNode{//定义双链表结点类型
+    ElemType data;//数据域
+    struct DNode *prior,*next;//前驱和后继指针
+}DNode,*DlinkList;
+
+//初始化
+bool InitDLinkList(DlinkList &L)
+{
+    L=(DNode*)malloc(sizeof(DNode));
+    if(L==NULL){
+        return false;
+    }
+    L->prior=NULL;
+    L->next=NULL;
+    return true;
+}
+
+//插入
+bool InsertNextDNode (DNode *p,DNode *s)
+{
+    if(p==NULL||s==NULL){
+        return false;
+    }
+    s->next=p->next;
+    if(p->next!=NULL){
+        p->next->prior=s;
+    }
+    s->prior=p;
+    p->next=s;
+    return true;
+}
+
+//删除
+bool DeleteNextDNode(DNode *p)
+{
+    if(p==NULL){
+        return false;
+    }
+    DNode *q=p->next;//找到p的后继结点q
+    if(q==NULL){
+        return false;
+    }
+    p->next=q->next;
+    if(q->next!=NULL){
+        q->next->prior=p;
+    }
+    free(q);
+    return true;
+}
