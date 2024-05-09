@@ -1,0 +1,64 @@
+//队列的顺序实现
+#include <stdio.h>
+#include <stdlib.h>
+#define MaxSize 10//定义队列中元素的最大个数
+typedef int ElemType;
+typedef struct{
+    ElemType data[MaxSize];//用静态数组存放队列元素
+    int front,rear;//队列头 队列尾
+}SqQueue;
+
+void InitQueue(SqQueue &Q)
+{
+    Q.rear=Q.front=0;//初始化时，队列头和队列尾指向0
+}
+
+//判空
+bool isEmpty(SqQueue &Q)
+{
+    if(Q.rear==Q.front){//不需要为零
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//入队
+bool EnQueue(SqQueue &Q,ElemType x)
+{
+    if((Q.rear+1)%MaxSize==Q.front) {//队列满的条件：队尾指针的再下一个位置是队头
+        return false;
+    }
+    Q.data[Q.rear]=x;//新元素插入队尾
+    Q.rear=(Q.rear+1)%MaxSize;//队尾指针加1取模（在逻辑上形成了环状）
+    return true;
+
+}
+
+//出队
+bool DeQueue(SqQueue &Q,ElemType &x)
+{
+    if(Q.rear==Q.front){
+        return false;
+    }
+    x=Q.data[Q.front];//先进先出
+    Q.front=(Q.front+1)%MaxSize;//队头指针后移
+    return true;
+}
+
+//获取队头元素的值，用x返回
+bool GetHead(SqQueue Q,ElemType &x)
+{
+    if(Q.rear==Q.front){
+        return false;
+    }
+    x=Q.data[Q.front];
+    return x;
+}
+int main()
+{
+    SqQueue Q;
+    bool ret;//存储返回值
+    InitQueue(Q);
+    return 0;
+}
