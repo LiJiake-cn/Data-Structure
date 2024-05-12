@@ -1,0 +1,39 @@
+//Circular Single-Linked Lists循环单链表
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef  int ElemType;
+typedef struct LNode
+{
+    ElemType data;
+    struct LNode *next;
+}LNode, *CircularSingleLinkedLists;
+
+//初始化一个循环单链表
+bool InitList(CircularSingleLinkedLists &L)
+{
+    L=(LNode*)malloc(sizeof(LNode));//分配一个头结点
+    if(L==NULL){
+        return false;
+    }
+    L->next=L;//头结点指向next指向头结点
+    return true;
+}
+//判断结点p是否为循环单链表的表尾结点
+bool isTail(CircularSingleLinkedLists L,LNode *p)
+{
+    if(p->next==L){
+        return true;
+    }else{
+        return false;
+    }
+}
+//判空
+bool Empty(CircularSingleLinkedLists L)
+{
+    if(L->next==L){
+        return true;
+    }else{
+        return false;
+    }
+}
