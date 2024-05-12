@@ -1,0 +1,35 @@
+//CircularDoubly-LinkedLists循环双链表
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef int ElemType;
+typedef struct DNode
+{
+    ElemType data;
+    struct DNode *prior, *next;
+}LNode,*CircularDoublyLinkedLists;
+
+//双链表的初始化
+bool InitDLinkList(CircularDoublyLinkedLists &L)
+{
+    L=(DNode*)malloc(sizeof(DNode));//分配一个头结点
+    if(L==NULL){
+        return false;
+    }
+    L->prior=L;
+    L->next=L;
+    return true;
+}
+
+//判断循环双链表是否为空
+bool Empty(CircularDoublyLinkedLists L)
+{
+    if(L->next==L){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//双链表的插入
+//双链表的删除
