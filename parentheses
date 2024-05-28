@@ -1,0 +1,60 @@
+//栈的应用— —括号的匹配问题
+//基于顺序栈的表述
+//最后出现的左括号最先被匹配（LIFO），每出现一个右括号就消耗一个左括号
+//核心算法的实现
+
+#include<stdio.h>
+#include<stdlib.h>
+#define MaxSize 10
+typedef char ElemType;
+typedef struct{
+    ElemType data[MaxSize];//静态数组存放栈中的元素
+    int top;//栈顶指针
+}SqStack;
+
+void InitStack(SqStack &S)
+{
+    //...初始化栈
+}
+
+bool StackEmpty(SqStack S)
+{
+    //...判断栈是否为空
+}
+
+bool Push(SqStack & S,ElemType x)
+{
+    //...新元素入栈
+}
+
+bool Pop(SqStack &S,ElemType &x)
+{
+    //...栈顶元素出栈，用x返回
+}
+
+bool bracketCheck(ElemType str[],int length)
+{
+    SqStack S;
+    InitStack(S);//初始化一个栈
+    for(int i=0;i<length;i++){
+        if(str[i]=='('||str[i]=='['||str[i]=='{'){
+            Push(S,str[i]);//扫描左括号，入栈
+        }else{
+            if(StackEmpty(S)){//扫描到右括号且当前栈空
+                return false;
+            }
+            ElemType topElem;
+            Pop(S,topElem);//栈顶元素出栈
+            if(str[i]==')'&&topElem!='('){
+                return false;
+            }
+            if(str[i]==']'&&topElem!='['){
+                return false;
+            }
+            if(str[i]=='}'&&topElem!='{'){
+                return false;
+            }
+        }
+    }
+    return StackEmpty(S);//检查完全部括号后，栈空说明匹配成功
+}
