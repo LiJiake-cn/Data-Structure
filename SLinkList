@@ -1,0 +1,31 @@
+//静态链表——SLinkList
+#include<stdio.h>
+
+#define MaxSize 10//静态链表的最大长度
+typedef int ElemType;
+typedef struct //静态链表结构类型定义
+{
+    ElemType data;//存储数据元素
+    int naxt;//下一个元素的数组下标
+}SLinkList[MaxSize];
+
+/*
+基本操作的实现
+    初始化静态链表：
+    把a[0]的next设置为-1
+    把其他结点的next设为一个特殊值用来表示结点空闲
+
+    插入：
+    从头结点出发遍历
+
+    插入位序为i的结点：
+    找到一个空的结点，存入数据元素
+    从头结点出发找到位序为i-1的结点
+    修改新节点的next
+    修改i-1的结点的next
+
+    删除某个结点：
+    从头结点出发找到前驱结点
+    修改前驱结点的游标
+    被删除的结点next设为特殊值
+*/
